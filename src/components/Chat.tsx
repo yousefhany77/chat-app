@@ -47,6 +47,7 @@ function Chat() {
     <section className="mx-auto grid h-full w-full grid-rows-[auto_1fr]  items-center gap-4 rounded-t-xl  bg-white/50 p-4 shadow-xl   md:rounded-xl">
       {/* Messages */}
       <div
+        data-testid="chat-container"
         ref={chatRef}
         className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full flex 
         max-h-[80vh]
