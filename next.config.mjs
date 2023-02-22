@@ -8,7 +8,14 @@
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
+  reactStrictMode: false,
+  images: {
+    domains: [
+      "image-chat-app-s3.s3.amazonaws.com",
+      "image-chat-app-s3.s3.us-east-1.amazonaws.com",
+      "https://via.placeholder.com/200",
+    ],
+  },
 
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you
