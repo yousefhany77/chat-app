@@ -9,7 +9,7 @@ import Message from "./Message";
 function Chat() {
   const messages = api.msg.list.useInfiniteQuery(
     {
-      limit: 5,
+      limit: 10,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
