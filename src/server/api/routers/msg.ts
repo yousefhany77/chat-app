@@ -55,7 +55,6 @@ export const msgRouter = createTRPCRouter({
           preSignedUrl: url,
         };
       }
-      console.log("sending message without image");
       await ctx.prisma.messages.create({
         data: {
           content: input.content,
