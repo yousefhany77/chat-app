@@ -3,8 +3,9 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 import { S3 } from "aws-sdk";
+import { getImageExtensions } from "~/utils/getImageExtensions";
 
-const imageExtensions = ["jpg", "jpeg", "png", "gif"];
+const imageExtensions = getImageExtensions()
 const s3 = new S3({
   accessKeyId: process.env.S3_BUCKET_ACCESS_KEY_ID,
   secretAccessKey: process.env.S3_BUCKET_ACCESS_KEY_SECRET,
@@ -54,6 +55,7 @@ export const msgRouter = createTRPCRouter({
           preSignedUrl: url,
         };
       }
+      console.log("sending message without image");
       await ctx.prisma.messages.create({
         data: {
           content: input.content,
@@ -98,7 +100,6 @@ export const msgRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const limit = input.limit ?? 50;
       const cursor = input.cursor;
-      console.log("cursor", cursor);
       const messages = await ctx.prisma.messages.findMany({
         take: limit + 1,
 

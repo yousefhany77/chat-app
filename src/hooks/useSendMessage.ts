@@ -7,7 +7,7 @@ const key = [
   ["msg", "list"],
   {
     input: {
-      limit: 5,
+      limit: 20,
     },
     type: "infinite",
   },
@@ -54,7 +54,6 @@ function useSendMessage() {
       return { previousMsgs };
     },
     onError: (err, newMsg, context) => {
-      console.error(err);
       toast.error("Something went wrong");
       if (context) queryClient.setQueryData(key, context.previousMsgs);
     },
@@ -73,7 +72,6 @@ function useSendMessage() {
       hasImage?: boolean;
       imgType?: string;
     }) => {
-      console.log("sendMsg", content, hasImage, imgType);
       return await msg.mutateAsync({ content, hasImage, imgType });
     },
     [msg]

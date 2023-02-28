@@ -5,6 +5,7 @@ import sendIcon from "~/../public/sendIcon.png";
 import useSendMessage from "~/hooks/useSendMessage";
 
 import { type RouterOutputs } from "~/utils/api";
+import { getImageExtensions } from "~/utils/getImageExtensions";
 export type Msg = RouterOutputs["msg"]["list"]["messages"][0];
 
 export type page = {
@@ -15,7 +16,7 @@ export type InfiniteQueryMsgs = {
   pages: page[];
   pageParams: string[];
 };
-const imageExtensions = ["jpg", "jpeg", "png", "gif"];
+const imageExtensions = getImageExtensions();
 function Input() {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [fileInput, setFileInput] = React.useState<File | null>(null);
@@ -57,9 +58,9 @@ function Input() {
       // send message without file
       else {
         messageContent &&
-          void sendMsg({
+          (await sendMsg({
             content: messageContent,
-          });
+          }));
       }
     } catch (error) {
       console.log(error);
@@ -79,7 +80,7 @@ function Input() {
           width={200}
           height={200}
           alt="preview image"
-          className="absolute bottom-16 left-1/2 object-contain  max-h-[50vh] w-fit max-w-md -translate-x-1/2 self-start  rounded-2xl bg-white/50  shadow-2xl"
+          className="absolute bottom-16 left-1/2 max-h-[50vh]  w-fit max-w-md -translate-x-1/2 self-start rounded-2xl  bg-white/50 object-contain  shadow-2xl"
           src={URL.createObjectURL(preview)}
         />
       )}
@@ -111,8 +112,18 @@ function Input() {
                 e.currentTarget.files = null;
                 setPreview(null);
               } else {
+                // Append timestamp to file name
+                const uniqueFileName = `${crypto.randomUUID()}-${file.name}`;
+
                 setFileInput(file);
                 setPreview(file);
+
+                // Use the unique file name when uploading
+                const formData = new FormData();
+                formData.append("file", file, uniqueFileName);
+
+                // Clear the file input field
+                e.currentTarget.value = "";
               }
             }
           }}

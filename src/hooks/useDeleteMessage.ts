@@ -7,7 +7,7 @@ const key = [
   ["msg", "list"],
   {
     input: {
-      limit: 5,
+      limit: 20,
     },
     type: "infinite",
   },
@@ -58,10 +58,12 @@ function useDeleteMessage({ messageId }: { messageId: string }) {
   const deleteMessage = React.useCallback(
     async (messageId: string) => {
       await deleteMsgMutation.mutateAsync(messageId);
+      
     },
     [deleteMsgMutation]
   );
-  return {deleteMessage};
+  return {deleteMessage, isDeleting: deleteMsgMutation.isLoading};
+  
 }
 
 export default useDeleteMessage;

@@ -11,7 +11,7 @@ interface IMessage {
 }
 
 function Message({ content, createdAt, imageURL, messageId }: IMessage) {
-  const { deleteMessage } = useDeleteMessage({ messageId });
+  const { deleteMessage,isDeleting } = useDeleteMessage({ messageId });
   // some weird bug with S3 bucket for first GET request it's returning 403 and then 200
   const [imageError, setImageError] = useState(false);
   return (
@@ -25,10 +25,12 @@ function Message({ content, createdAt, imageURL, messageId }: IMessage) {
       focus:ring-red-600 
       focus:ring-opacity-50
       group-hover:block
+      disabled:opacity-50
       "
         onClick={() => {
           void deleteMessage(messageId);
         }}
+        disabled={isDeleting}
       >
         ❌
       </button>
@@ -55,7 +57,7 @@ function Message({ content, createdAt, imageURL, messageId }: IMessage) {
             src={imageURL}
             placeholder="blur"
             blurDataURL={imageURL}
-            className=" w-full w-fit  rounded-md object-contain "
+            className=" w-fit  rounded-md object-contain "
             width={200}
             height={200}
             onError={(e) => {
